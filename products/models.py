@@ -35,11 +35,10 @@ class Category(models.Model):
         return ancestors[::-1]
     
     def get_descendants(self):
-        '''Get descendants of the category.'''
+        '''Get direct descendants of the category.'''
         descendants = []
         for child in self.children.all():
             descendants.append(child)
-            descendants.extend(child.get_descendants())
         return descendants
     
 
