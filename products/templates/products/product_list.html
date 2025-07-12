@@ -1,0 +1,79 @@
+{% extends 'products/base.html' %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="mb-4">Category Hierarchy</h1>
+    
+
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card border-2 border-primary">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="h5 mb-0">Category Tree</h2>
+                </div>
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush">
+                        {% for category in categories %}
+                            {% if category.is_root %}
+                                {% include 'products/category_tree.html' with category=category %}
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-8">
+            <div class="card border-2 border-info">
+                <div class="card-header bg-info text-white">
+                    <h2 class="h5 mb-0">Category Details</h2>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h3 class="h6 text-muted">All Categories (Flattened)</h3>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for category in categories %}
+                                <span class="badge bg-secondary">{{ category.name }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <h3 class="h6 text-muted">Breadcrumb Examples</h3>
+                        <div class="list-group">
+                            {% for category in categories %}
+                                <div class="list-group-item">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span>{{ category.name }}</span>
+                                        <div>
+                                            {% for ancestor in category.get_category_path %}
+                                                <span class="badge bg-light text-dark">{{ ancestor.name }}</span>
+                                                
+                                                {% if not forloop.last %} > {% endif %}
+
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="h6 text-muted">Leaf Nodes (Categories with no children)</h3>
+                        <div class="d-flex flex-wrap gap-2">
+                            {% for category in categories %}
+                                {% if category.is_leaf %}
+                                    <span class="badge bg-success">{{ category.name }}</span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}

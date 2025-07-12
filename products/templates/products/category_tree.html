@@ -1,0 +1,22 @@
+{% load static %}
+<div class="list-group-item">
+    <div class="d-flex justify-content-between align-items-center">
+        <a class="text-decoration-none" data-bs-toggle="collapse" href="#category-{{ category.id }}">
+            <i class="bi bi-folder-fill text-warning"></i>
+            {{ category.name }}
+            <span class="badge bg-primary rounded-pill ms-2">{{ category.get_children.count }}</span>
+        </a>
+        <span class="badge bg-light text-dark">Level {{ category.get_level }}</span>
+    </div>
+    
+    <div class="collapse show mt-2 ms-3" id="category-{{ category.id }}">
+        {% for child in category.get_children %}
+            {% include 'products/category_tree.html' with category=child %}
+        {% empty %}
+            <div class="list-group-item list-group-item-light">
+                <i class="bi bi-file-earmark text-muted me-2"></i>
+                No subcategories
+            </div>
+        {% endfor %}
+    </div>
+</div>
