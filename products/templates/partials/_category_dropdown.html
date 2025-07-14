@@ -1,0 +1,23 @@
+<!--recursive template-->
+<li class="dropend">
+  <a class="dropdown-item dropdown-toggle"
+     href="#"
+     data-bs-toggle="dropdown"
+     data-bs-auto-close="outside"
+     role="button"
+     aria-expanded="false">
+    {{ category.name }}
+  </a>
+
+  {% if category.get_children %}
+    <ul class="dropdown-menu dropdown-menu-end">
+      {% for child in category.get_children %}
+        {% if child.is_leaf %}
+          <li><a class="dropdown-item" href="#">{{ child.name }}</a></li>
+        {% else %}
+          {% include "partials/_category_dropdown.html" with category=child %}
+        {% endif %}
+      {% endfor %}
+    </ul>
+  {% endif %}
+</li>

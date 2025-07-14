@@ -22,7 +22,7 @@ class Category(models.Model):
         return self.name
     
     def get_children(self):
-        '''Get children of the category.'''
+        '''Get direct children of the category.'''
         return self.children.all()
     
     def get_ancestors(self):
@@ -34,13 +34,13 @@ class Category(models.Model):
             parent = parent.parent
         return ancestors[::-1]
     
-    def get_descendants(self):
-        '''Get direct descendants of the category.'''
+    def get_descendants(self):  
+        '''Get all descendants of the category (children, grandchildren, etc.).'''
         descendants = []
         for child in self.children.all():
             descendants.append(child)
-        return descendants
-    
+            descendants.extend(child.get_descendants())
+        return descendants    
 
     def get_level(self):
         '''Get level of the category.'''
